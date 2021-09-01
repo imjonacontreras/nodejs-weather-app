@@ -1,0 +1,130 @@
+const path = require('path')
+const express = require('express')
+const hbs = require('hbs')
+
+const app = express()
+
+// Define paths for Express config
+const publicDirectoryPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
+
+// Setup handlebars engine and views location
+app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+
+hbs.registerPartials(partialsPath)
+
+// Setup static directory to serve
+app.use(express.static(publicDirectoryPath))
+
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather',
+        name: 'Jona Contreras'
+    })
+})
+
+// ABOUT
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About Me',
+        name: 'Jona Contreras'
+    })
+})
+
+// HELP
+app.get('/help', (req, res) => {
+    res.render('help', {
+        helpTxt: 'This is a help message.',
+        title: 'Help',
+        name: 'Jona Contreras'
+    })
+})
+
+// -----------------------------------------------------------
+//                      CHALLENGE 07
+// -----------------------------------------------------------
+//
+// GOAL: UPDATE WEATHER ENDPOINT TO ACCEPT ADDRESS
+//
+// 1. No address? Send back an error message,
+// 2. Address? Send back the static JSON
+//          - Add address property onto JSON which returns the provided address
+// 3. Test /weather and /weather?address=baao
+
+// WEATHER
+app.get('/weather', (req, res) => {
+
+    if (!req.query.address) {
+        return res.send({
+            error: 'You must enter an Address to search.'
+        })
+    }
+
+    //else
+    res.send({
+        address: req.query.address,
+        location: 'Baao',
+        forecast: 'It is rainy.'
+    })
+})
+
+
+
+// SAMPLE QUERY FOR PRODUCTS
+app.get('/products', (req, res) => {
+    if (!req.query.search) { // IF NO SEARCH TERM
+        // ERROR RESULT :Cannot set headers after they are sent to the client
+        // cannot respond TWICE TO THE CLIENT
+        // TO FIX ADD return
+        return res.send({
+            error: 'You must provide a search term.'
+        })
+    }
+
+
+    console.log(req.query)
+    console.log(req.query.search) //undefined
+
+    res.send({
+        products: []
+    })
+
+    //address example
+    //http://localhost:3000/products?key=value
+    //http://localhost:3000/products?seach=games
+    //http://localhost:3000/products?seach=games&rating=5
+
+    //available in the express route handler
+    // app.get('', (req, res) => {
+    //     res.send({
+    //         products: []
+    //     })
+
+    // })
+})
+
+
+// 404 HELP ERROR
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404 Help',
+        name: 'Jona Contreras',
+        errMsg: 'Help article not found'
+    })
+})
+
+// GENERIC 404 ERROR
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        name: 'Jona Contreras',
+        errMsg: 'Page not found.'
+    })
+})
+
+// SETUP PORT
+app.listen(3000, () => {
+    console.log('Server is up on port 3000.')
+})

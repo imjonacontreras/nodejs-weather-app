@@ -1,0 +1,31 @@
+const express = require('express')
+
+// express is a function
+
+const app = express()
+// express () does not take arguments
+// this line is done ^^^
+
+// app.com
+// app.com/help
+// app.com/about
+
+
+
+app.get('', (req, res) => {
+    res.send('Hello express!') //display in browser
+});
+app.get('/help', (req, res) => {
+    res.send('Help Page')
+})
+app.get('/about', (req, res) => {
+    res.send('About Page')
+})
+
+app.listen(3000, () => {
+    console.log('Server is up on port 3000.')
+    // port
+    // common developer port
+    // ctrl + c to stop terminal
+})
+

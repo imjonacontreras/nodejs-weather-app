@@ -1,0 +1,19 @@
+// FETCH THE FORECAST INFORMATION
+console.log('Client side javascript file is loaded!')
+
+//FETCH API
+//BROWSER BASED API
+// ACCESSIBLE BY MOST BROWSERS
+// BUT NOT IN NODE
+
+fetch('http://puzzle.mead.io/puzzle').then((response) => {
+    // then( (response as the only parameter here))
+    // provide a function that will run in the future 
+    // when the data is available
+
+    response.json().then((data) => {
+        // this () will run when the json data has arrived
+        // and been parsed
+        console.log(data)
+    })
+})

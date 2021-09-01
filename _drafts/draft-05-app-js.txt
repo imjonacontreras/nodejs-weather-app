@@ -1,0 +1,77 @@
+
+const path = require('path')
+const express = require('express')
+
+const app = express()
+
+const publicDirectoryPath = path.join(__dirname, '../public')
+
+
+
+// template engine to create dynamic templates
+// create codes that are usable
+// handle bars
+
+
+// tell express which templating engine was installed
+// key = setting name, value
+app.set('view engine', 'hbs') // SINGLE LINE TO SETUP HANDLE BARS
+app.use(express.static(publicDirectoryPath))
+
+// to access handle bars/hbs
+app.get('', (req, res) => {
+    //res.render('index') 
+    // should match up with the one in views folder
+
+    // 2nd arg is an object you want that view to be able to access
+    res.render('index', {
+        title: 'Weather',
+        name: 'Jona Contreras'
+    })
+})
+
+// static means nothing is changing
+
+
+
+// ABOUT
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About Me',
+        name: 'Jona Contreras'
+    })
+})
+
+
+// HELP
+
+// -----------------------------------------------------------
+//                      CHALLENGE 04
+// -----------------------------------------------------------
+//
+// GOAL: CREATE A TEMPLATE FOR HELP PAGE
+//
+// 1. Setup a help template to render a help message to the screen
+// 2. Setup the help route and render the template with an example message
+// 3. Test your work
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        helpTxt: 'This is a help message.'
+    })
+})
+
+
+
+// WEATHER
+app.get('/weather', (req, res) => {
+    res.send({
+        location: 'Baao',
+        forecast: 'It is rainy.'
+    })
+})
+// SETUP PORT
+app.listen(3000, () => {
+    console.log('Server is up on port 3000.')
+})
+

@@ -1,0 +1,56 @@
+console.log('Client side javascript file is loaded!')
+
+// fetch('http://localhost:3000/weather?address=baao').then((response) => {
+//     response.json().then((data) => {
+//         if (data.error) {
+//             console.log(data.error)
+//         } else {
+//             console.log(data.location)
+//             console.log(data.forecast)
+//         }
+//     })
+// })
+
+// const weatherForm = document.querySelector('form')
+// const search = document.querySelector('input')
+
+// weatherForm.addEventListener('submit', (e) => {
+//     e.preventDefault()
+//     // allow user to do whatever we want without webpage refreshing
+
+//     const location = search.value
+//     const url = 'http://localhost:3000/weather?address='
+//     // console.log(location)
+
+// })
+
+// -----------------------------------------------------------------
+//                          CHALLENGE 10
+// -----------------------------------------------------------------
+//
+// Goal: USE INPUT VALUE TO GET WEATHER
+//
+// 1. Migrate fetch call into the submit callback
+// 2. Use the search text as the address query string value
+// 3. Submit the form with a valid and invalid value to test
+
+const weatherForm = document.querySelector('form')
+const search = document.querySelector('input')
+
+weatherForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const location = search.value
+    const url = 'http://localhost:3000/weather?address='
+
+    fetch(url + location).then((response) => {
+        response.json().then((data) => {
+            if (data.error) {
+                console.log(data.error)
+            } else {
+                console.log(data.location)
+                console.log(data.forecast)
+            }
+        })
+    })
+})

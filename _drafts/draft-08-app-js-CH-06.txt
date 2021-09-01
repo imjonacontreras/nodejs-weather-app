@@ -1,0 +1,99 @@
+const path = require('path')
+const express = require('express')
+const hbs = require('hbs')
+
+const app = express()
+
+// Define paths for Express config
+const publicDirectoryPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
+
+// Setup handlebars engine and views location
+app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+
+hbs.registerPartials(partialsPath)
+
+// Setup static directory to serve
+app.use(express.static(publicDirectoryPath))
+
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather',
+        name: 'Jona Contreras'
+    })
+})
+
+// ABOUT
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About Me',
+        name: 'Jona Contreras'
+    })
+})
+
+// HELP
+app.get('/help', (req, res) => {
+    res.render('help', {
+        helpTxt: 'This is a help message.',
+        title: 'Help',
+        name: 'Jona Contreras'
+    })
+})
+
+// WEATHER
+app.get('/weather', (req, res) => {
+    res.send({
+        location: 'Baao',
+        forecast: 'It is rainy.'
+    })
+})
+
+// WILL MATCH PAGES THAT HAS /help/*
+// app.get('/help/*', (req, res) => {
+//     res.send('Help article not found')
+// })
+
+// ERROR 404
+// why need to come last?
+// LOOKS FOR A MATCH LINE BY LINE
+// * wildcard character
+// app.get('*', (req, res) => {
+//     res.send('My 404 page.')
+// })
+
+
+// -----------------------------------------------------------
+//                      CHALLENGE 06
+// -----------------------------------------------------------
+//
+// GOAL: CREATE AND RENDER A 404 PAGE WITH HANDLEBARS
+//
+// 1. Setup the template to render the header and footer
+// 2. Setup the template to render an error message in a paragraph
+// 3. Render the template for both 404 routes
+//          - Page not found // for generic
+//          - Help article not found
+// 4. Test your work. Visit /what and /help/units
+
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404 Help',
+        name: 'Jona Contreras',
+        errMsg: 'Help article not found'
+    })
+})
+
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        name: 'Jona Contreras',
+        errMsg: 'Page not found.'
+    })
+})
+
+// SETUP PORT
+app.listen(3000, () => {
+    console.log('Server is up on port 3000.')
+})
